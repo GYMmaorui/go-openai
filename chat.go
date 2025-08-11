@@ -140,7 +140,8 @@ func (m ChatCompletionMessage) MarshalJSON() ([]byte, error) {
 
 	msg := struct {
 		Role             string            `json:"role"`
-		Content          string            `json:"content,omitempty"`
+		// 算能sophnet侧需要显示传递空字符串，否则tool_call会报错
+		Content          string            `json:"content"`
 		Refusal          string            `json:"refusal,omitempty"`
 		MultiContent     []ChatMessagePart `json:"-"`
 		Name             string            `json:"name,omitempty"`
@@ -381,8 +382,9 @@ type ChatCompletionChoice struct {
 	// content_filter: Omitted content due to a flag from our content filters
 	// null: API response still in progress or incomplete
 	FinishReason         FinishReason         `json:"finish_reason"`
-	LogProbs             *LogProbs            `json:"logprobs,omitempty"`
-	ContentFilterResults ContentFilterResults `json:"content_filter_results,omitempty"`
+	// 去掉无用字段，避免因为供应商侧不标准导致的序列化失败。
+	// LogProbs             *LogProbs            `json:"logprobs,omitempty"`
+	// ContentFilterResults ContentFilterResults `json:"content_filter_results,omitempty"`
 }
 
 // ChatCompletionResponse represents a response structure for chat completion API.
