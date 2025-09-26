@@ -281,12 +281,17 @@ type ChatCompletionRequest struct {
 	// Such as think mode for qwen3. "chat_template_kwargs": {"enable_thinking": false}
 	// https://qwen.readthedocs.io/en/latest/deployment/vllm.html#thinking-non-thinking-modes
 	ChatTemplateKwargs map[string]any `json:"chat_template_kwargs,omitempty"`
-	// For doubao config thinking mode
+	// Thinking provides a way to configure the "thinking" feature for models that support it.
+	Thinking *Thinking `json:"thinking,omitempty"`
+}
+
+type Thinking struct {
+	// for doubao mainly
 	// https://www.volcengine.com/docs/82379/1449737#%E5%BC%80%E5%90%AF-%E5%85%B3%E9%97%AD%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83
 	// - enabled：强制开启，强制开启深度思考能力。
 	// - disabled：强制关闭深度思考能力。
 	// - auto：模型自行判断是否进行深度思考
-	Thinking string `json:"thinking,omitempty"`
+	Type string `json:"type,omitempty"`
 }
 
 type StreamOptions struct {
