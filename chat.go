@@ -141,7 +141,7 @@ func (m ChatCompletionMessage) MarshalJSON() ([]byte, error) {
 	}
 
 	msg := struct {
-		Role             string            `json:"role"`
+		Role string `json:"role"`
 		// 算能sophnet侧需要显示传递空字符串，否则tool_call会报错
 		Content          string            `json:"content"`
 		Refusal          string            `json:"refusal,omitempty"`
@@ -334,6 +334,12 @@ type ChatCompletionRequest struct {
 	SafetyIdentifier string `json:"safety_identifier,omitempty"`
 	// Embedded struct for non-OpenAI extensions
 	ChatCompletionRequestExtensions
+	// For doubao config thinking mode
+	// https://www.volcengine.com/docs/82379/1449737#%E5%BC%80%E5%90%AF-%E5%85%B3%E9%97%AD%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83
+	// - enabled：强制开启，强制开启深度思考能力。
+	// - disabled：强制关闭深度思考能力。
+	// - auto：模型自行判断是否进行深度思考
+	Thinking string `json:"thinking,omitempty"`
 }
 
 type StreamOptions struct {
@@ -443,7 +449,7 @@ type ChatCompletionChoice struct {
 	// function_call: The model decided to call a function
 	// content_filter: Omitted content due to a flag from our content filters
 	// null: API response still in progress or incomplete
-	FinishReason         FinishReason         `json:"finish_reason"`
+	FinishReason FinishReason `json:"finish_reason"`
 	// 去掉无用字段，避免因为供应商侧不标准导致的序列化失败。
 	// LogProbs             *LogProbs            `json:"logprobs,omitempty"`
 	// ContentFilterResults ContentFilterResults `json:"content_filter_results,omitempty"`
