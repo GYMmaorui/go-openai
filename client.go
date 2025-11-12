@@ -325,7 +325,8 @@ func (c *Client) handleErrorResp(resp *http.Response) error {
 		}
 		return reqErr
 	}
-
+	// 增加header头打印
+	errRes.Error.HTTPHeader = resp.Header
 	errRes.Error.HTTPStatus = resp.Status
 	errRes.Error.HTTPStatusCode = resp.StatusCode
 	return errRes.Error

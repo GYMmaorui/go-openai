@@ -3,6 +3,7 @@ package openai
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
 )
 
@@ -15,6 +16,7 @@ type APIError struct {
 	Type           string      `json:"type"`
 	HTTPStatus     string      `json:"-"`
 	HTTPStatusCode int         `json:"-"`
+	HTTPHeader     http.Header `json:"-"`
 	InnerError     *InnerError `json:"innererror,omitempty"`
 }
 
@@ -37,11 +39,26 @@ type ErrorResponse struct {
 }
 
 func (e *APIError) Error() string {
-	if e.HTTPStatusCode > 0 {
-		return fmt.Sprintf("error, status code: %d, status: %s, message: %s", e.HTTPStatusCode, e.HTTPStatus, e.Message)
+	// 创建一个包含所有字段的 map，包括那些 json tag 为 `-` 的字段
+	errorMap := map[string]interface{}{
+		"http_header":      e.HTTPHeader,
+		"code":             e.Code,
+		"message":          e.Message,
+		"param":            e.Param,
+		"type":             e.Type,
+		"http_status":      e.HTTPStatus,
+		"http_status_code": e.HTTPStatusCode,
+		"inner_error":      e.InnerError,
 	}
 
-	return e.Message
+	// 序列化为 JSON 字符串
+	jsonBytes, err := json.Marshal(errorMap)
+	if err != nil {
+		// 如果序列化失败，返回一个简单的错误信息
+		return fmt.Sprintf("APIError: status code: %d status: %s, message: %s (failed to marshal: %v)", e.HTTPStatusCode, e.HTTPStatus, e.Message, err)
+	}
+
+	return string(jsonBytes)
 }
 
 func (e *APIError) UnmarshalJSON(data []byte) (err error) {
