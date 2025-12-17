@@ -38,6 +38,9 @@ func NewReasoningValidator() *ReasoningValidator {
 
 // Validate performs all validation checks for reasoning models.
 func (v *ReasoningValidator) Validate(request ChatCompletionRequest) error {
+	// 取消sdk校验，真的恶心到家了
+	return nil
+
 	o1Series := strings.HasPrefix(request.Model, "o1")
 	o3Series := strings.HasPrefix(request.Model, "o3")
 	o4Series := strings.HasPrefix(request.Model, "o4")
