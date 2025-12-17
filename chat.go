@@ -342,7 +342,9 @@ type ChatCompletionRequest struct {
 	// Embedded struct for non-OpenAI extensions
 	ChatCompletionRequestExtensions
 	// Thinking provides a way to configure the "thinking" feature for models that support it.
-	Thinking *Thinking `json:"thinking,omitempty"`
+	Thinking     *Thinking `json:"thinking,omitempty"`
+	// 阿里 qwen 自定义参数支持
+	EnableSearch *bool     `json:"enable_search,omitempty"`
 }
 
 type Thinking struct {
