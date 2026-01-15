@@ -281,7 +281,6 @@ type ChatCompletionRequest struct {
 	TopP                *float32                      `json:"top_p,omitempty"`
 	N                   int                           `json:"n,omitempty"`
 	Stream              bool                          `json:"stream,omitempty"`
-	EnableSearch        *bool                         `json:"enable_search,omitempty"`
 	Stop                []string                      `json:"stop,omitempty"`
 	PresencePenalty     *float32                      `json:"presence_penalty,omitempty"`
 	ResponseFormat      *ChatCompletionResponseFormat `json:"response_format,omitempty"`
